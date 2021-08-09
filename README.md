@@ -7,13 +7,13 @@
 
 In .html template:
 
-  <tabs-table [columns]="tableColumns" [canSearch]="true">
-    <ng-container *ngFor="let product of products$ | async">
-      <tabs-table-tab [dataItems]="product.items">
-        {{ product.title }}
-      </tabs-table-tab>
-    </ng-container>
-  </tabs-table>
+    <tabs-table [columns]="tableColumns" [canSearch]="true">
+        <ng-container *ngFor="let product of products$ | async">
+            <tabs-table-tab [dataItems]="product.items">
+                {{ product.title }}
+            </tabs-table-tab>
+        </ng-container>
+    </tabs-table>
 
 In .ts:
 
