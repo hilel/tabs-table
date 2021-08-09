@@ -1,6 +1,15 @@
 .tabs-table-tabs {
   display: flex;
   justify-items: flex-start;
+
+  .tabs-container {
+    flex: 1 1 0%;
+    display: flex;// for tabs
+  }
+
+  .search {
+    input { padding: 5px; }
+  }
 }
 .tabs-table-table {
   font-family: 'Roboto', Arial, Helvetica, sans-serif;
@@ -8,8 +17,8 @@
   width: 100%;
   margin-top: 2px;
 
-  tr {
-    &:nth-child(even){ background-color: #cfd5ea; }
+  tbody tr {
+    &:nth-child(odd) { background-color: #cfd5ea; }
     &:hover { background-color: #e9ebf5; }
   }
 

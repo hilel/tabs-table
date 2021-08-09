@@ -1,7 +1,15 @@
 <div class="tabs-table-tabs">
 
-  <!-- tabs will render here -->
-  <ng-content></ng-content>
+  <div class="tabs-container">
+    <!-- tabs will render here -->
+    <ng-content></ng-content>
+  </div>
+
+  <div class="search">
+    <input *ngIf="canSearch" #searchInput type="text" placeholder="Search"
+      (keyup)="onSearch(searchInput.value)"
+    >
+  </div>
 
 </div>
 

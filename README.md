@@ -5,7 +5,7 @@
 
 In .html template:
 
-  <tabs-table [columns]="tableColumns">
+  <tabs-table [columns]="tableColumns" [canSearch]="true">
 
     <ng-container *ngFor="let product of products$ | async">
 
@@ -27,7 +27,10 @@ In .ts:
     { name: 'price', title: 'Price' }
   ]
 
-  dataItems = [
+Data example:
+
+```json
+  [
     {
       "title": "Phones",
       "items": [{
@@ -70,10 +73,9 @@ In .ts:
             "system": "ChromeOS"
         }
       ]
-    ]
-
-
-
+    }
+  ]
+```
 
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.2.14.
