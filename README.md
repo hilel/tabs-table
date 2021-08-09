@@ -5,7 +5,7 @@
 
 In .html template:
 
-  <tabs-table tabFilterBy="title" [columns]="tableColumns">
+  <tabs-table [columns]="tableColumns">
 
     <ng-container *ngFor="let product of products$ | async">
 
