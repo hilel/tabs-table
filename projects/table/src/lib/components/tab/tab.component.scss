@@ -1,0 +1,22 @@
+.tabs-table-tab {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 30px;
+  padding: 0 22px;
+  margin-right: 3px;
+  border-radius: 4px 4px 0 0;
+  background-color: #dae3f3;
+  color: #77797d;
+  cursor: pointer;
+
+  &.active {
+    background-color: #4472c4;
+    color: #fff;
+  }
+
+  // &:last-of-type {
+  //   margin-right: 0;
+  // }
+}

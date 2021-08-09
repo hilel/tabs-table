@@ -1,0 +1,13 @@
+<div class="container">
+  <tabs-table tabFilterBy="title" [columns]="tableColumns">
+
+    <ng-container *ngFor="let product of products$ | async">
+
+      <tabs-table-tab [dataItems]="product.items">
+        {{ product.title }}
+      </tabs-table-tab>
+
+    </ng-container>
+
+  </tabs-table>
+</div>

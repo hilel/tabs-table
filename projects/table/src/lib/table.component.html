@@ -1,0 +1,36 @@
+<div class="tabs-table-tabs">
+
+  <!-- tabs will render here -->
+  <ng-content></ng-content>
+
+</div>
+
+  <table class="tabs-table-table">
+
+    <thead>
+      <tr>
+        <th *ngFor="let column of columns"
+            (click)="onSort(column)"
+        >
+          <span>
+            {{ column.title }}&nbsp;
+            <i class="sort-arrow" *ngIf="column.name == sortByColumn?.columnName">
+              {{ sortByColumn.asc ? '&#x025BE;' : '&#x025B4;' }}
+            </i>
+          </span>
+        </th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr
+        *ngFor="let item of dataItems$ | async"
+      >
+        <td *ngFor="let column of columns">
+          {{ item[column.name] || '' }}
+        </td>
+      </tr>
+    </tbody>
+
+
+  </table>
