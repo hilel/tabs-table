@@ -1,6 +1,8 @@
 # TabsTable
 ## Simplbe Angular table with data categories tabs and sorting functionality
 
+[Working example](https://hilel.github.io/tabs-table/docs/)
+
 ## Usage api 
 
 In .html template:
@@ -19,6 +21,7 @@ In .html template:
 
 In .ts:
 
+```
   import { TableColumn } from 'projects/table/src/public-api';
 
   tableColumns: TableColumn[] = [
@@ -26,6 +29,7 @@ In .ts:
     { name: 'name', title: 'Name' },
     { name: 'price', title: 'Price' }
   ]
+```
 
 Data example:
 
