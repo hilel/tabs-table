@@ -1,5 +1,5 @@
 # TabsTable
-## Simplbe Angular table with data categories tabs and sorting functionality
+## Simplbe Angular table with data categories tabs and with ability to search and sort
 
 [Working example](https://hilel.github.io/tabs-table/docs/)
 
@@ -8,15 +8,11 @@
 In .html template:
 
   <tabs-table [columns]="tableColumns" [canSearch]="true">
-
     <ng-container *ngFor="let product of products$ | async">
-
       <tabs-table-tab [dataItems]="product.items">
         {{ product.title }}
       </tabs-table-tab>
-
     </ng-container>
-
   </tabs-table>
 
 In .ts:
