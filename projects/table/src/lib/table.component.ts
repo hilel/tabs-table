@@ -1,6 +1,6 @@
 import { AfterContentChecked, ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChildren, Input, QueryList } from '@angular/core';
-import { combineLatest, Observable, Subject } from 'rxjs';
-import { map, scan, switchMap, tap } from 'rxjs/operators';
+import { BehaviorSubject, combineLatest, Observable, Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, map, switchMap, tap } from 'rxjs/operators';
 
 import { TabComponent } from './components/tab/tab.component';
 import { SortBy, TableColumn } from './table-column';
@@ -13,15 +13,18 @@ import { TableService } from './table.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TableComponent implements AfterContentChecked {
-  @Input() tabFilterBy: string;
   @Input() data: any[];
   @Input() columns: TableColumn[];
+  @Input() canSearch: boolean;
   @ContentChildren(TabComponent, { descendants: false }) tabs: QueryList<TabComponent>;
 
   public dataItems$: Observable<any[]>;
   public sortByColumn: SortBy | null | undefined;
 
   private _sortByColumn$: Subject<SortBy | null> = new Subject();
+  // need search$ to be BehaviorSubject - it fires initial value
+  // fixes got no items when canSearch - there are other ways to fix it
+  private _search$: BehaviorSubject<string> = new BehaviorSubject('');
   private _initialized: boolean = false;
 
   constructor(
@@ -64,20 +67,43 @@ export class TableComponent implements AfterContentChecked {
     });
   }
 
+  public onSearch(term: string) {
+    this._search$.next(term);
+  }
+
   private _setupDataItemsObservable() {
+    // let tabItemsObs: Observable<any[]>
+    // if(this.canSearch) {
+    //   tabItemsObs = this._getSearchObservable();
+    // } else {
     const tabItemsObs = this._tableService.activeTab
       .asObservable().pipe(
         map(_t => _t.dataItems)
       );
+    // }
+
+    const combinedObservables: Observable<any[] | SortBy | string>[] = [
+      tabItemsObs, this._sortByColumn$
+    ];
+
+    if(this.canSearch) {
+      combinedObservables.push(this._getSearchObservable());
+    }
 
     this.dataItems$ =
-      combineLatest([
-        tabItemsObs,
-        this._sortByColumn$
-      ])
+      combineLatest(combinedObservables)
         .pipe(
           map((_combined) => {
-            return this._tableService.sortItems(_combined[0], _combined[1]);
+            let itemsToSort: any[] = _combined[0] as any[];
+            const term = _combined[2] as string;
+            if(this.canSearch && term?.length > 1) {
+              itemsToSort = this._tableService.searchItems(
+                term, itemsToSort, this.columns
+              );
+            }
+            return this._tableService.sortItems(
+              itemsToSort,
+              _combined[1] as SortBy)
           }),
           tap(
             // just to ensure to trigger change detection on next cycle,
@@ -87,7 +113,32 @@ export class TableComponent implements AfterContentChecked {
         );
   }
 
-
-
+  private _getSearchObservable(): Observable<string> {
+    return this._search$.pipe(
+      debounceTime(500),
+      distinctUntilChanged()// ,
+      // switchMap(_searchTerm => {
+      //   return this._tableService.activeTab.asObservable()
+      //     .pipe(
+      //       map(_t => {
+      //         if(!_searchTerm?.length) {
+      //           console.log(_searchTerm);
+      //           return _t.dataItems || [];
+      //         }
+      //         // get only items wich have search term in on of item columns
+      //         const filtered = (_t.dataItems || []).filter(_item => {
+      //           (this.columns || []).find(_c =>
+      //             ((_item[_c.name] || '') + '')
+      //               .toLocaleLowerCase()
+      //               .includes(_searchTerm.toLocaleLowerCase())
+      //           )
+      //         });
+      //         console.log(filtered);
+      //         return filtered;
+      //       })
+      //     )
+      // })
+    );
+  }
 
 }

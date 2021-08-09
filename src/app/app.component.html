@@ -1,5 +1,5 @@
 <div class="container">
-  <tabs-table tabFilterBy="title" [columns]="tableColumns">
+  <tabs-table [columns]="tableColumns" [canSearch]="true">
 
     <ng-container *ngFor="let product of products$ | async">
 
