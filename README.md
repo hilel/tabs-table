@@ -1,5 +1,5 @@
 # TabsTable
-## Simplbe Angular table with data categories tabs and with ability to search and sort
+## Simple Angular table with data categories tabs and with ability to search and sort
 
 [Working example](https://hilel.github.io/tabs-table/docs/)
 
